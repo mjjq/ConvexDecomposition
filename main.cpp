@@ -23,7 +23,7 @@ void drawPolygon(sf::RenderWindow& window, ConcavePolygon const & poly)
     //text.setCharacterSize(5);
     text.setScale({0.01f, 0.01f});
 
-    for(int i=0; i<verts.size(); ++i)
+    for(unsigned int i=0; i<verts.size(); ++i)
     {
         sf::Vector2f position = {verts[i].position.x, verts[i].position.y};
         realVerts.push_back(sf::Vertex(position));
@@ -99,7 +99,7 @@ void drawVertices(sf::RenderWindow & window, std::vector<Vertex > const & vertic
 {
     sf::Color color = {140,140,140,200};
     std::vector<sf::Vertex > realVerts;
-    for(int i=0; i<vertices.size(); ++i)
+    for(unsigned int i=0; i<vertices.size(); ++i)
     {
         sf::Vector2f position = {vertices[i].position.x, vertices[i].position.y};
         realVerts.push_back(sf::Vertex(position, color));
@@ -110,7 +110,7 @@ void drawVertices(sf::RenderWindow & window, std::vector<Vertex > const & vertic
     window.draw(realVerts.data(), realVerts.size(), sf::LineStrip);
 }
 
-drawCoordinates(sf::RenderWindow & window, sf::Vector2f const & coords, sf::Vector2f const & offset)
+void drawCoordinates(sf::RenderWindow & window, sf::Vector2f const & coords, sf::Vector2f const & offset)
 {
     sf::Text text;
     sf::Font font;
@@ -138,19 +138,25 @@ int main()
     window.setView(view);
 
     std::vector<Vertex > verts = {
-        {{-2.05f, -4.35f}},
-        {{0.8f, -1.7f}},
-        {{2.625f, -1.95f}},
-        {{0.175f, 1.65f}}
+        {{-0.938f, -0.0f}},
+        {{-2.0f, -1.0f}},
+        {{-0.0f, -2.0f}},
+        {{2.0f, -1.0f}},
+        {{1.0f, 0.0f}},
+        {{2.0f, 1.0f}},
+        {{0.0f, 2.0f}},
+        {{-2.0f, 1.0f}}
     };
 
     std::vector<Vertex > mouseVerts;
 
     LineSegment mouseLs;
+    mouseLs.startPos = {-0.938f, 0.0f};
+    mouseLs.finalPos = {1.0f, 0.0f};
     int mouseLsSeg = 0;
 
     ConcavePolygon poly(verts);
-    poly.convexDecomp();
+    //poly.convexDecomp();
 
     std::cout << poly.checkIfRightHanded() << "\n";
 
@@ -159,8 +165,6 @@ int main()
     segment.finalPos = {0.0f, 1.0f};
     segment.startPos = {1.0f, -2.0f};
     //poly.convexDecomp();
-
-    int polyIndex = 0;
 
     while(window.isOpen())
     {
@@ -175,21 +179,12 @@ int main()
                     break;
                 case(sf::Event::KeyPressed):
                 {
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-                    {
-                        poly.flipPolygon();
-                        std::cout << poly.checkIfRightHanded() << "\n";
-                    }
-                    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num0))
-                        polyIndex = 0;
-                    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-                        polyIndex = 1;
-                    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
                     {
                         if(mouseVerts.size() > 2)
                         {
                             poly = ConcavePolygon(mouseVerts);
-                            poly.convexDecomp();
+                            //poly.convexDecomp();
                             mouseVerts.clear();
                         }
                     }
@@ -243,5 +238,7 @@ int main()
         drawVertices(window, mouseVerts);
 
         window.display();
+
+        sf::sleep(sf::milliseconds(16));
     }
 }
