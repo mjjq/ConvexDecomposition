@@ -294,8 +294,12 @@ class ConcavePolygon
             for(unsigned int i=0; i<indices.size(); ++i)
             {
                 int index = indices[i];
-                if(Vec2::square(polygonVertices[index].position - origin) < minDistance)
+                float currDistance = Vec2::square(polygonVertices[index].position - origin);
+                if(currDistance < minDistance)
+                {
+                    minDistance = currDistance;
                     closest = index;
+                }
             }
 
             return closest;
@@ -549,6 +553,16 @@ public:
         }
         else
             returnArr.push_back(*this);
+    }
+
+    void reset()
+    {
+        if(subPolygons.size() > 0)
+        {
+            subPolygons[0].reset();
+            subPolygons[1].reset();
+            subPolygons.clear();
+        }
     }
 };
 

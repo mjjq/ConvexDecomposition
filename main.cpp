@@ -126,6 +126,15 @@ void drawCoordinates(sf::RenderWindow & window, sf::Vector2f const & coords, sf:
     window.draw(text);
 }
 
+void printVertices(std::vector<Vertex > const & verts)
+{
+    std::cout << "\nPolygon, " << verts.size() << " vertices: \n";
+    for(auto& vert : verts)
+    {
+        std::cout << "{{" << vert.position.x << "f, " << vert.position.y << "f}},\n";
+    }
+}
+
 int main()
 {
     sf::RenderWindow window;
@@ -138,14 +147,15 @@ int main()
     window.setView(view);
 
     std::vector<Vertex > verts = {
-        {{-0.938f, -0.0f}},
-        {{-2.0f, -1.0f}},
-        {{-0.0f, -2.0f}},
-        {{2.0f, -1.0f}},
-        {{1.0f, 0.0f}},
-        {{2.0f, 1.0f}},
-        {{0.0f, 2.0f}},
-        {{-2.0f, 1.0f}}
+        {{-3.025f, -0.05f}},
+        {{-0.675f, -0.85f}},
+        {{-0.6f, -2.4f}},
+        {{0.775f, -2.75f}},
+        {{1.075f, -0.75f}},
+        {{-1.925f, 0.06f}},
+        {{0.475f, 0.5f}},
+        {{0.2f, 2.25f}},
+        {{-1.025f, 0.5f}}
     };
 
     std::vector<Vertex > mouseVerts;
@@ -195,6 +205,14 @@ int main()
                     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                     {
                         poly.slicePolygon(mouseLs);
+                    }
+                    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+                    {
+                        poly.reset();
+                    }
+                    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+                    {
+                        printVertices(poly.getVertices());
                     }
 
                     break;
