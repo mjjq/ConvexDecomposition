@@ -565,6 +565,19 @@ public:
             subPolygons.clear();
         }
     }
+
+    Vec2 getPoint(int index) const
+    {
+        if(index >= 0 && index < vertices.size())
+            return vertices[index].position;
+
+        return {0.0f, 0.0f};
+    }
+
+    int getPointCount() const
+    {
+        return vertices.size();
+    }
 };
 
 #endif // CONCAVE_POLY_H
