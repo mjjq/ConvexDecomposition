@@ -440,8 +440,9 @@ class ConcavePolygon
 public:
     ConcavePolygon(VertexArray const & _vertices) : vertices{_vertices}
     {
-        if(checkIfRightHanded() == false)
-            flipPolygon();
+        if(vertices.size() > 2)
+            if(checkIfRightHanded() == false)
+                flipPolygon();
     }
     ConcavePolygon() {}
 
@@ -535,7 +536,8 @@ public:
 
     void convexDecomp()
     {
-        convexDecomp(vertices);
+        if(vertices.size() > 3)
+            convexDecomp(vertices);
     }
 
     VertexArray const & getVertices() const
