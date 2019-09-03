@@ -140,7 +140,7 @@ struct LineSegment
         float t2 = Vec2::dot(pIntersect - p2,
                              s2.finalPos - p2);
 
-        if(t2 < (0.0f-TOLERANCE) || t2 / Vec2::square(s2.finalPos - p2) >= 1.0f)
+        if(t2 < (0.0f-TOLERANCE) || t2 / Vec2::square(s2.finalPos - p2) >= 1.0f - TOLERANCE)
             return {false, {0.0f, 0.0f}};
 
         return {true, pIntersect};
@@ -313,7 +313,9 @@ class ConcavePolygon
     void convexDecomp(VertexArray const & _vertices)
     {
         if(subPolygons.size() > 0)
+        {
             return;
+        }
 
         int reflexIndex = findFirstReflexVertex(_vertices);
         if(reflexIndex == -1)
@@ -486,7 +488,7 @@ public:
             return;
         }
 
-        const float TOLERANCE = 1e-15;
+        const float TOLERANCE = 1e-5;
 
         VertexIntMap slicedVertices = verticesAlongLineSegment(segment, vertices);
         slicedVertices = cullByDistance(slicedVertices, segment.startPos, 2);
@@ -503,12 +505,21 @@ public:
 
             auto it = slicedVertices.begin();
 
-            if(std::abs(Vec2::cross(relativePosition, segment.direction())) > TOLERANCE)
+            float perpDistance = std::abs(Vec2::cross(relativePosition, segment.direction()));
+            if(perpDistance > TOLERANCE)
             {
-                if(i > it->first && i <= (++it)->first)
+                //std::cout << relCrossProd << ", i: " << i << "\n";
+                if((i > it->first) && (i <= (++it)->first))
+                {
                     leftVerts.push_back(vertices[i]);
+                    //std::cout << i << " leftVertAdded\n";
+                }
                 else
+                {
                     rightVerts.push_back(vertices[i]);
+                    //std::cout << i << " rightVertAdded\n";
+                }
+
             }
 
             if(slicedVertices.find(i) != slicedVertices.end())
@@ -566,7 +577,7 @@ public:
         }
     }
 
-    Vec2 getPoint(int index) const
+    Vec2 getPoint(unsigned int index) const
     {
         if(index >= 0 && index < vertices.size())
             return vertices[index].position;
