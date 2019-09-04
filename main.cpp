@@ -135,6 +135,14 @@ void printVertices(std::vector<Vertex > const & verts)
     }
 }
 
+void scaleVerts(std::vector<Vertex > & verts, float amount)
+{
+    for(auto& vert : verts)
+    {
+        vert.position = vert.position * amount;
+    }
+}
+
 int main()
 {
     sf::RenderWindow window;
@@ -184,6 +192,7 @@ int main()
     mouseLs.finalPos = {1.0f, 0.0f};
     int mouseLsSeg = 0;
 
+    //scaleVerts(verts, 1000.0f);
     ConcavePolygon poly(verts);
     //poly.convexDecomp();
 

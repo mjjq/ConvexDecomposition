@@ -4,11 +4,12 @@
 #include <vector>
 #include <cmath>
 #include <map>
+#include <iostream>
 
 struct Vec2
 {
-    float x;
-    float y;
+    double x;
+    double y;
 
     static float length(Vec2 const & v)
     {
@@ -120,7 +121,7 @@ struct LineSegment
 
     static std::pair<bool, Vec2> intersects(LineSegment s1, LineSegment s2)
     {
-        const float TOLERANCE = 1e-3;
+        const float TOLERANCE = 1e-2;
 
         Vec2 p1 = s1.startPos;
         Vec2 p2 = s2.startPos;
@@ -236,7 +237,9 @@ class ConcavePolygon
         LineSegment ls(originalPosition, vert.position);
         VertexIntMap intersectingVerts = verticesAlongLineSegment(ls, polygonVertices);
 
-        if(intersectingVerts.size() > 2)
+        std::cout << intersectingVerts.size() << " intverts\n";
+
+        if(intersectingVerts.size() > 3)
             return false;
 
         return true;
