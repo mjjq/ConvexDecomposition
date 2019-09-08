@@ -3,6 +3,8 @@
 
 #include "./src/ConcavePolygon.h"
 
+using namespace cxd;
+
 void drawPolygon(sf::RenderWindow& window, ConcavePolygon const & poly)
 {
     if(poly.getNumberSubPolys() > 0)

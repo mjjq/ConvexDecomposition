@@ -6,6 +6,9 @@
 #include <map>
 #include <iostream>
 
+namespace cxd
+{
+
 struct Vec2
 {
     double x;
@@ -595,5 +598,7 @@ public:
         return vertices.size();
     }
 };
+
+}
 
 #endif // CONCAVE_POLY_H
