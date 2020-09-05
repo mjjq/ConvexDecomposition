@@ -513,7 +513,10 @@ public:
             auto it = slicedVertices.begin();
 
             float perpDistance = std::abs(Vec2::cross(relativePosition, segment.direction()));
-            if(perpDistance > TOLERANCE)
+
+            if( perpDistance > TOLERANCE ||
+              ( perpDistance <= TOLERANCE && (slicedVertices.find(i)==slicedVertices.end()) )
+            )
             {
                 //std::cout << relCrossProd << ", i: " << i << "\n";
                 if((i > it->first) && (i <= (++it)->first))
