@@ -10,11 +10,92 @@ Credits: The algorithm for decomposing concave polygons to convex can be found h
 ## Installation
 To install this library, simply copy ConcavePolygon.h into your project and #include "ConcavePolygon.h".
 
+### Example Usage: Creating a concave polygon, decomposing, and acquiring convex subpolygons
 
-## Usage
-Define a set of vertices by creating an std::vector<Vertex > with a list of 2D positions.
-To create a polygon, feed the Vertex vector into the ConcavePolygon constructor.
+```
+#include "ConcavePolygon.h"
 
-To decompose a polygon, call polygon.convexDecomp().
+#include <vector>
 
-To slice a polygon along a line segment, define the line segment with LineSegment(Vec2 startPosition, Vec2 finalPosition) and call polygon.slicePolygon(LineSegment l).
+int main()
+{
+    // Create a vector of vertices
+    std::vector<cxd::Vertex > vertices =
+    {
+        cxd::Vec2({0.0f, 1.0f}),
+        cxd::Vec2({-1.0f, 0.0f}),
+        cxd::Vec2({0.0f, 0.5f}),
+        cxd::Vec2({1.0f, 0.0f})
+    };
+
+    // Create polygon from these vertices
+    cxd::ConcavePolygon concavePoly(vertices);
+
+    // Perform convex decomposition on polygon
+    concavePoly.convexDecomp();
+
+    // Retrieve a decomposed convex subpolygon by index
+    // We still use the concave poly type here
+    cxd::ConcavePolygon subPolygon = concavePoly.getSubPolygon(0);
+
+    // Retrieve vertices from the subpolygon (also applies to the
+    // concave polygon we defined earlier)
+    std::vector<cxd::Vertex > subPolyVerts = subPolygon.getVertices();
+
+    // Create a vector and retrieve all convex subpolygons
+    // as a single list
+    std::vector<cxd::ConcavePolygon > subPolygonList;
+    concavePoly.returnLowestLevelPolys(subPolygonList);
+
+
+    return 0;
+}
+```
+
+### Example Usage: Creating a polygon and slicing it along a defined line segment
+```
+#include "ConcavePolygon.h"
+
+#include <vector>
+
+int main()
+{
+    // Create a vector of vertices
+    std::vector<cxd::Vertex > vertices =
+    {
+        cxd::Vec2({0.0f, 1.0f}),
+        cxd::Vec2({-1.0f, 0.0f}),
+        cxd::Vec2({0.0f, -1.0f}),
+        cxd::Vec2({1.0f, 0.0f})
+    };
+
+    // Create polygon from these vertices
+    cxd::ConcavePolygon concavePoly(vertices);
+
+    // Create a valid line segment to slice the polygon.
+    // Note: The line segment must pass through two polygon
+    // edges in order to slice. Here we define the start
+    // and end positions of the line segment.
+    cxd::LineSegment line(cxd::Vec2({-2.0f, 0.0f}),
+                          cxd::Vec2({ 2.0f, 0.0f}));
+
+    // Slice the polygon along this line segment
+    concavePoly.slicePolygon(line);
+
+    // Retrieve a decomposed subpolygons by index
+    // This works exactly the same when retrieving subpolygons
+    // after convex decomposition
+    cxd::ConcavePolygon subPolygon = concavePoly.getSubPolygon(0);
+
+    // Retrieve vertices from the subpolygon (also applies to the
+    // concave polygon we defined earlier)
+    std::vector<cxd::Vertex > subPolyVerts = subPolygon.getVertices();
+
+    // Create a vector and retrieve all convex subpolygons
+    // as a single list
+    std::vector<cxd::ConcavePolygon > subPolygonList;
+    concavePoly.returnLowestLevelPolys(subPolygonList);
+
+    return 0;
+}
+```
