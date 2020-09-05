@@ -10,7 +10,8 @@ Credits: The algorithm for decomposing concave polygons to convex can be found h
 ## Installation
 To install this library, simply copy ConcavePolygon.h into your project and #include "ConcavePolygon.h".
 
-### Example Usage: Creating a concave polygon, decomposing, and acquiring convex subpolygons
+## Usage
+### Example: Creating a concave polygon, decomposing, and acquiring convex subpolygons
 
 ```
 #include "ConcavePolygon.h"
@@ -52,7 +53,7 @@ int main()
 }
 ```
 
-### Example Usage: Creating a polygon and slicing it along a defined line segment
+### Example: Creating a polygon and slicing it along a defined line segment
 ```
 #include "ConcavePolygon.h"
 
